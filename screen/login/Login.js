@@ -57,7 +57,7 @@ const Login = ({ navigation }) => {
         value={password}
       />
       <Button title="Đăng nhập" onPress={handleLogin} />
-      <br/>
+       <View style={styles.spacing} />
       <Button title="Đăng ký" onPress={navigateRegister} />
     </View>
   );
@@ -81,6 +81,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 10,
   },
+  spacing: {
+      marginVertical: 10,
+    },
 });
 
 export default Login;

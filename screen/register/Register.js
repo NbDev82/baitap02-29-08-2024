@@ -8,28 +8,37 @@ const Register = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleRegister = () => {
-    fetch('https://food-app-api-demo.onrender.com/api/users/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: name, email: email, password: password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      Alert.alert('Login');
-      Alert.alert(data);
-      if (data.success)
-      {
-        navigation.navigate('Login');
-      } else {
-        Alert.alert('Lỗi', 'Đăng ký thất bại!');
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      Alert.alert('Lỗi', 'Có lỗi xảy ra, vui lòng thử lại sau.');
-    });
+    const handleSignup = async () => {
+      if (!username || !email || !password) {
+          Alert.alert('Error', 'Please fill in all fields');
+          return;
+        }
+
+        try {
+          const response = await fetch('https://food-app-api-demo.onrender.com/api/users', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: username,
+              email: email,
+              password: password,
+            }),
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            Alert.alert('Success', 'Account created successfully');
+            navigation.navigate('Login');
+          } else {
+            Alert.alert('Signup failed', data.message || 'An error occurred');
+          }
+        } catch (error) {
+          Alert.alert('Error', 'An error occurred. Please try again later.');
+          console.error('Signup error:', error);
+        }
+  };
   };
 
   return (
