@@ -13,7 +13,7 @@ const Register = ({ navigation }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name: name, email: email, password: password }),
     })
     .then(response => response.json())
     .then(data => {

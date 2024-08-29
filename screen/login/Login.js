@@ -2,34 +2,42 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 
 const Login = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigateRegister = () => {
     navigation.navigate('Register');
   };
 
-  const handleLogin = () => {
-    fetch('https://food-app-api-demo.onrender.com/api/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success)
-      {
-        console.log(data)
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://food-app-api-demo.onrender.com/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(response.ok)
+      if (response.ok) {
         navigation.navigate('Home');
       } else {
-        alert('Tên đăng nhập hoặc mật khẩu không đúng');
+        Alert.alert('Đăng nhâp thất bại', data.message || 'An error occurred');
       }
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    } catch (error) {
+      Alert.alert('Error', 'An error occurred. Please try again later.');
+      console.error('Login error:', error);
+    }
   };
 
   return (
@@ -38,8 +46,8 @@ const Login = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        onChangeText={(text) => setUsername(text)}
-        value={username}
+        onChangeText={(text) => setEmail(text)}
+        value={email}
       />
       <TextInput
         style={styles.input}
