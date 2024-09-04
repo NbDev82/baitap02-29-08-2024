@@ -9,6 +9,11 @@ const Login = ({ navigation }) => {
     navigation.navigate('Register');
   };
 
+  const navigateForgotPassword = () => {
+      navigation.navigate('ForgotPassword');
+    };
+
+
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
@@ -59,6 +64,8 @@ const Login = ({ navigation }) => {
       <Button title="Đăng nhập" onPress={handleLogin} />
        <View style={styles.spacing} />
       <Button title="Đăng ký" onPress={navigateRegister} />
+      <View style={styles.spacing} />
+      <Button title="Quên mật khẩu" onPress={navigateForgotPassword} />
     </View>
   );
 };
